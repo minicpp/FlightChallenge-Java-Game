@@ -1,6 +1,5 @@
 package game;
 
-import java.awt.Graphics;
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
@@ -14,6 +13,7 @@ public class GameMain extends Application{
 	
 	public static void main(String [] args){
 		GameMain gameMain = new GameMain();
+		gameMain.setTitle("hello");
 	}
 	
 	public void init(){
@@ -26,11 +26,12 @@ public class GameMain extends Application{
 	public void update(){
 		++x;
 		++y;
-		if(x > Application.WINDOW_WIDTH){
+		if(x > this.getBoardWidth()){
 			x = 0;
 		}
-		if(y > Application.WINDOW_HEIGHT){
+		if(y > this.getBoardHeight()){
 			y = 0;
+			setBoardSize(400,500);
 		}
 	}
 	

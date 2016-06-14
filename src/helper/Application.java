@@ -1,19 +1,13 @@
 package helper;
 
-import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.RenderingHints;
 import java.awt.Toolkit;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Ellipse2D;
 
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -29,11 +23,12 @@ public class Application extends JFrame {
 	
 
 	private void initUI() {
-		this.add(new Board(), BorderLayout.CENTER);
+		this.observer = new Board();
+		this.add(observer, BorderLayout.CENTER);
 		this.pack();
 		this.setResizable(false);
 		// this.setSize(200,300);
-		this.setTitle("Oakland University STEM CAMPS - Game Design - Flight Challenge");
+		this.setTitle("Game Demo");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 	}
@@ -61,14 +56,27 @@ public class Application extends JFrame {
 		
 	}
 	
+	public void setBoardSize(int width, int height){
+		this.observer.setPreferredSize(new Dimension(width, height));
+		this.pack();
+	}
+	
+	public int getBoardWidth(){
+		return this.observer.getWidth();
+	}
+	
+	public int getBoardHeight(){
+		return this.observer.getHeight();
+	}
+	
 	public void drawImage(Image image, int x, int y){
 		this.graphic.drawImage(image, x, y, observer);
 	}
 	
-	private void draw(Graphics g, Board observer) {
+	private void draw(Graphics g) {
 		this.graphic = g;
-		this.observer = observer;
 		this.draw();
+		this.graphic = null;
 	}
 
 
@@ -85,8 +93,8 @@ public class Application extends JFrame {
 		@Override
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
-			Application.this.draw(g, this);
-			//Toolkit.getDefaultToolkit().sync();
+			Application.this.draw(g);
+			Toolkit.getDefaultToolkit().sync();
 		}
 
 		public void addNotify() {
@@ -101,7 +109,6 @@ public class Application extends JFrame {
 			while (true) {
 				beforeTime = System.currentTimeMillis();
 				Application.this.update();
-				Toolkit.getDefaultToolkit().sync();
 				repaint();
 				timeDiff = System.currentTimeMillis() - beforeTime;
 				sleep = DELAY - timeDiff;
